@@ -28,7 +28,7 @@ pipeline {
                         fi
  
                         
-                        cd backend-project/backend-project-deploy
+                        cd backend-project-deploy
                         git checkout main
                         git pull origin main
                      
