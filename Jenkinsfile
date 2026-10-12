@@ -15,7 +15,7 @@ pipeline {
         }
 stage('Deploy to EC2') {
 steps {
-sshagent(credentials: ['ubuntu']) {
+sshagent(credentials: ['backend-ssh']) {
 sh '''
 set -eu
 
