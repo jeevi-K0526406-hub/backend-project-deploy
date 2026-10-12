@@ -1,4 +1,18 @@
-
+pipeline {
+    agent any
+    
+    environment{
+        EC2_IP = "16.171.140.81"
+    }
+    stages {
+        
+        stage('checkout code') {
+            steps {
+                git branch: 'main',
+                credentialsId: 'crm-cred1',
+                url: 'https://github.com/jeevi-K0526406-hub/backend-project-deploy.git'
+            }
+        }
 stage('Deploy to EC2') {
 steps {
 sshagent(credentials: ['ubuntu']) {
@@ -40,6 +54,7 @@ backend-image
 docker ps --filter name=myapp
 echo 'Backend deployment completed successfully.'"
 '''
+}
 }
 }
 }
