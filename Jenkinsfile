@@ -20,8 +20,8 @@ pipeline {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@${EC2_IP} '
                         set -e
-                        mkdir -p /home/ubuntu
-                        cd /home/ubuntu
+                        mkdir -p /home/ubuntu/backend-project-deploy
+                        cd /home/ubuntu/backend-project-deploy
  
                         if [ ! -d backend-project ]; then
                             git clone git@github.com:jeevi-K0526406-hub/backend-project-deploy.git
