@@ -20,21 +20,22 @@ pipeline {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@${EC2_IP} '
                         set -e
-                        mkdir -p /home/ubuntu/apps
-                        cd /home/ubuntu/apps
-
+                        mkdir -p /home/ubuntu
+                        cd /home/ubuntu
+ 
                         if [ ! -d backend-project ]; then
                             git clone git@github.com:jeevi-K0526406-hub/backend-project-deploy.git
                         fi
-
-                        cd backend-project
+ 
+                        
+                        cd backend-project/backend-project-deploy
                         git checkout main
                         git pull origin main
                      
                         docker stop myapp || true
                         docker rm myapp || true
                         docker rmi backend-image || true
-
+ 
                         docker build -t backend-image .
                         docker run -d -p 5000:5000 --name myapp backend-image
                     '
