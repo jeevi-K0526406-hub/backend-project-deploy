@@ -1,56 +1,30 @@
 pipeline {
     agent any
-    
-    environment{
-        EC2_IP = "16.171.140.81"
-    }
     stages {
-        
-        stage('checkout code') {
+        stage('Checkout') {
             steps {
-                git branch: 'main',
-                credentialsId: 'crm-cred1',
-                url: 'https://github.com/jeevi-K0526406-hub/backend-project-deploy.git'
+                git branch: 'main', credentialsId: 'crm-cred1', url: 'https://github.com/jeevi-K0526406-hub/backend-project-deploy.git'
             }
         }
-        
         stage('Deploy to EC2') {
             steps {
                 sshagent(['aws-backend']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@${EC2_IP} '
-                        set -e
-                        mkdir -p /home/ubuntu/backend-project-deploy
-                        cd /home/ubuntu/backend-project-deploy
- 
-                        if [ ! -d backend-project ]; then
-                            git clone git@github.com:jeevi-K0526406-hub/backend-project-deploy.git
-                        fi
- 
-                        
-                        cd backend-project-deploy
-                        git checkout main
-                        git pull origin main
-                     
-                        docker stop myapp || true
-                        docker rm myapp || true
-                        docker rmi backend-image || true
- 
-                        docker build -t backend-image .
-                        docker run -d -p 5000:5000 --name myapp backend-image
+                    ssh -o StrictHostKeyChecking=no ubuntu@16.171.140.81'
+                    set -e
+                    mkdir -p /home/ubuntu/backend-project-deploy
+                    cd /home/ubuntu/backend-project-deploy
+                    rm -rf backend-project-deploy
+                    git clone git@github.com:jeevi-K0526406-hub/backend-project-deploy.git
+                    cd backend-project-deploy
+                    docker stop backend-app || true
+                    docker rm backend-app || true
+                    docker build -t backend-app .
+                    docker run -d --name backend-app -p 5001:5000 backend-app
                     '
                     """
                 }
             }
-        }
-    }
-    
-    post {
-        success {
-            echo "✅ DEPLOYMENT SUCCESSFUL"
-        }
-        failure {
-            echo "❌ DEPLOYMENT FAILED"
         }
     }
 }
