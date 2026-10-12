@@ -24,7 +24,7 @@ pipeline {
                         cd /home/ubuntu/apps
 
                         if [ ! -d backend-project ]; then
-                            git clone git@github.com:greeshmagp19-creator/backend-project.git
+                            git clone git@github.com:jeevi-K0526406-hub/backend-project-deploy.git
                         fi
 
                         cd backend-project
